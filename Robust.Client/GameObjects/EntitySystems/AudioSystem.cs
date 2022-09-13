@@ -293,9 +293,7 @@ public sealed class AudioSystem : SharedAudioSystem
     /// <param name="audioParams"></param>
     private IPlayingAudioStream? Play(AudioStream stream, AudioParams? audioParams = null)
     {
-        var source = _clyde.CreateAudioSource(stream);
-
-        if (source == null)
+        if (!TryCreateAudioSource(stream, out var source))
             return null;
 
         ApplyAudioParams(audioParams, source);
@@ -331,9 +329,7 @@ public sealed class AudioSystem : SharedAudioSystem
     private IPlayingAudioStream? Play(AudioStream stream, EntityUid entity, EntityCoordinates? fallback = null,
         AudioParams? audioParams = null)
     {
-        var source = _clyde.CreateAudioSource(stream);
-
-        if (source == null)
+        if (!TryCreateAudioSource(stream, out var source))
             return null;
 
         var query = GetEntityQuery<TransformComponent>();
@@ -379,9 +375,7 @@ public sealed class AudioSystem : SharedAudioSystem
     private IPlayingAudioStream? Play(AudioStream stream, EntityCoordinates coordinates,
         EntityCoordinates fallbackCoordinates, AudioParams? audioParams = null)
     {
-        var source = _clyde.CreateAudioSource(stream);
-
-        if (source == null)
+        if (!TryCreateAudioSource(stream, out var source))
             return null;
 
         if (!source.SetPosition(fallbackCoordinates.Position))
